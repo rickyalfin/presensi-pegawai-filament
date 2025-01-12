@@ -14,22 +14,31 @@ class ScheduleResource extends Resource
 {
     protected static ?string $model = Schedule::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-date-range';
+
+    // untik membuat urutan tabel pada menu navigasi
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->searchable()
-                    ->required(),
-                Forms\Components\Select::make('shift_id')
-                    ->relationship('shift', 'name')
-                    ->required(),
-                Forms\Components\Select::make('office_id')
-                    ->relationship('office', 'name')
-                    ->required(),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\Select::make('user_id')
+                                    ->relationship('user', 'name')
+                                    ->searchable()
+                                    ->required(),
+                                Forms\Components\Select::make('shift_id')
+                                    ->relationship('shift', 'name')
+                                    ->required(),
+                                Forms\Components\Select::make('office_id')
+                                    ->relationship('office', 'name')
+                                    ->required(),
+                            ]),
+                    ]),
             ]);
     }
 
