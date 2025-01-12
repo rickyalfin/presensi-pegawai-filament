@@ -14,6 +14,7 @@ class Schedule extends Model
         'user_id',
         'shift_id',
         'office_id',
+        'is_wfa',
     ];
 
     // BelongsTo digunakan untuk relasi antar tabel (foreign key)
