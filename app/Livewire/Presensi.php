@@ -7,11 +7,15 @@ use Livewire\Component;
 
 class Presensi extends Component
 {
+    public $latitude;
+    public $longitude;
+    public $insideRadius = false;
     public function render()
     {
         $schedule = Schedule::where('user_id', FacadesAuth::user()->id)->first();
         return view('livewire.presensi', [
-            'schedule' => $schedule,
+            'schedule'     => $schedule,
+            'insideRadius' => $this->insideRadius,
         ]);
     }
 }
