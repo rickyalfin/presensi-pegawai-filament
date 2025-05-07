@@ -14,8 +14,10 @@ class Attendance extends Model
         'schedule_longitude',
         'schedule_start_time',
         'schedule_end_time',
-        'latitude',
-        'longitude',
+        'start_latitude',
+        'start_longitude',
+        'end_latitude',
+        'end_longitude',
         'start_time',
         'end_time',
     ];

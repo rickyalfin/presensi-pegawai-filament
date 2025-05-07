@@ -42,16 +42,16 @@ class Presensi extends Component
                     'schedule_longitude'  => $schedule->office->longitude,
                     'schedule_start_time' => $schedule->shift->start_time,
                     'schedule_end_time'   => $schedule->shift->end_time,
-                    'latitude'            => $this->latitude,
-                    'longitude'           => $this->longitude,
+                    'start_latitude'      => $this->latitude,
+                    'start_longitude'     => $this->longitude,
                     'start_time'          => Carbon::now()->toTimeString(),
                     'end_time'            => Carbon::now()->toTimeString(),
                 ]);
             } else {
                 $attendance->update([
-                    'latitude'  => $this->latitude,
-                    'longitude' => $this->longitude,
-                    'end_time'  => Carbon::now()->toTimeString(),
+                    'end_latitude'  => $this->latitude,
+                    'end_longitude' => $this->longitude,
+                    'end_time'      => Carbon::now()->toTimeString(),
                 ]);
             }
 
