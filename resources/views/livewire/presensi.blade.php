@@ -8,14 +8,21 @@
                         <p><strong>Nama Pegawai : </strong> {{ Auth::user()->name }} </p>
                         <p><strong>Kantor : </strong>{{ $schedule->office->name }}</p>
                         <p><strong>Shift : </strong>{{ $schedule->shift->name }} ({{ $schedule->shift->start_time }} - {{ $schedule->shift->end_time }}) WIB</p>
+                        @if($schedule->is_wfa)
+                            <p class="text-green-500"><strong>Status : </strong>WFA</p>
+                        @else
+                            <p><strong>Status : </strong>WFO</p>
+                        @endif
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                         <div class="bg-gray-100 p-4 rounded-lg">
                             <h4 class="text-l font-bold mb-2">Jam Masuk</h4>
+                            {{-- <p><strong>08.00</strong></p> --}}
                             <p><strong>{{ $attendance->start_time }}</strong></p>
                         </div>
                         <div class="bg-gray-100 p-4 rounded-lg">
                             <h4 class="text-l font-bold mb-2">Jam Pulang</h4>
+                            {{-- <p><strong>16.00</strong></p> --}}
                             <p><strong>{{ $attendance->end_time }}</strong></p>
                         </div>
                     </div>
@@ -74,22 +81,23 @@
                         component.set('insideRadius', true);
                         component.set('latitude', lat);
                         component.set('longitude', lng);
-                    } else {
-                        alert('Anda diluar radius');
-
-                    }
-                
-                })
-                    
-                } else {
-                    alert ('Tidak bisa get location');
-                }
+                    }                
+                })           
+            } else {
+                alert ('Tidak bisa get location');
             }
+        }
 
-            function isWithinRadius(lat, lng, center, radius) {
+        function isWithinRadius(lat, lng, center, radius) {
+            const is_wfa = {{ $schedule->is_wfa }}
+            if (is_wfa) {
+                return true;
+            } else {
                 let distance = map.distance([lat, lng], center);
-                return distance <= radius;
+            return distance <= radius;
             }
+            
+        }
 
     </script>
 </div>
