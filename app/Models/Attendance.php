@@ -36,4 +36,17 @@ class Attendance extends Model
 
         return $starTime->greaterThan($scheduleStartTime);
     }
+
+    public function workDuration()
+    {
+        $starTime = Carbon::parse($this->start_time);
+        $endTime  = Carbon::parse($this->end_time);
+
+        $duration = $starTime->diff($endTime);
+
+        $hours   = $duration->h;
+        $minutes = $duration->i;
+
+        return "{$hours} jam {$minutes} menit";
+    }
 }

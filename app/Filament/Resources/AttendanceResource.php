@@ -58,7 +58,7 @@ class AttendanceResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $is_super_admin = Auth::user()->hasRole('Super Admin');
+                $is_super_admin = Auth::user()->hasRole('super_admin');
 
                 if (! $is_super_admin) {
                     $query->where('user_id', Auth::user()->id);
@@ -68,9 +68,11 @@ class AttendanceResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Nama Pegawai')
+                    ->searchable()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('is_late')
@@ -82,11 +84,16 @@ class AttendanceResource extends Resource
                     ->color(fn(string $state): string => match ($state) {
                         'Tepat Waktu'                     => 'success',
                         'Terlambat'                       => 'danger',
-                    }),
+                    })
+                    ->description(fn(Attendance $record): string => 'Durasi : ' . $record->workDuration()),
                 Tables\Columns\TextColumn::make('start_time')
                     ->label('Jam Masuk'),
                 Tables\Columns\TextColumn::make('end_time')
                     ->label('Jam Pulang'),
+                // Tables\Columns\TextColumn::make('work_duration')
+                //     ->getStateUsing(function ($record) {
+                //         return $record->workDuration();
+                //     }),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
