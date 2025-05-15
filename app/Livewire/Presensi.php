@@ -55,10 +55,12 @@ class Presensi extends Component
                 ]);
             }
 
-            return redirect()->route('presensi', [
-                'schedule'     => $schedule,
-                'insideRadius' => false,
-            ]);
+            return redirect('admin/attendances');
+
+            // return redirect()->route('presensi', [
+            //     'schedule'     => $schedule,
+            //     'insideRadius' => false,
+            // ]);
         }
     }
 }

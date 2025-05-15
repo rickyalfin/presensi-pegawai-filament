@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,5 +27,13 @@ class Attendance extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function isLate()
+    {
+        $scheduleStartTime = Carbon::parse($this->schedule_satart_time);
+        $starTime          = Carbon::parse($this->start_time);
+
+        return $starTime->greaterThan($scheduleStartTime);
     }
 }
