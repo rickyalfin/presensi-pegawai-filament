@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ScheduleResource\Pages;
@@ -29,6 +28,7 @@ class ScheduleResource extends Resource
                     ->schema([
                         Forms\Components\Section::make()
                             ->schema([
+                                Forms\Components\Toggle::make('is_banned'),
                                 Forms\Components\Select::make('user_id')
                                     ->relationship('user', 'name')
                                     ->searchable()
@@ -51,7 +51,7 @@ class ScheduleResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 $is_super_admin = Auth::user()->hasRole('Super Admin');
 
-                if (!$is_super_admin) {
+                if (! $is_super_admin) {
                     $query->where('user_id', Auth::user()->id);
                 }
             })
@@ -64,6 +64,7 @@ class ScheduleResource extends Resource
                     ->label('Email')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_banned'),
                 Tables\Columns\BooleanColumn::make('is_wfa')
                     ->label('WFA'),
                 Tables\Columns\TextColumn::make('shift.name')
@@ -103,9 +104,9 @@ class ScheduleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSchedules::route('/'),
+            'index'  => Pages\ListSchedules::route('/'),
             'create' => Pages\CreateSchedule::route('/create'),
-            'edit' => Pages\EditSchedule::route('/{record}/edit'),
+            'edit'   => Pages\EditSchedule::route('/{record}/edit'),
         ];
     }
 }

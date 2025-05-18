@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,11 +9,17 @@ class Schedule extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'is_wfa'    => 'boolean',
+        'is_banned' => 'boolean',
+    ];
+
     protected $fillable = [
         'user_id',
         'shift_id',
         'office_id',
         'is_wfa',
+        'is_banned',
     ];
 
     // BelongsTo digunakan untuk relasi antar tabel (foreign key)
