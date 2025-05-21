@@ -64,7 +64,8 @@ class ScheduleResource extends Resource
                     ->label('Email')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('is_banned'),
+                Tables\Columns\ToggleColumn::make('is_banned')
+                    ->hidden(fn() => ! Auth::user()->hasRole('Super Admin')),
                 Tables\Columns\BooleanColumn::make('is_wfa')
                     ->label('WFA'),
                 Tables\Columns\TextColumn::make('shift.name')
