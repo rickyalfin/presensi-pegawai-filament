@@ -1,17 +1,16 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LeaveResource\Pages;
-use App\Filament\Resources\LeaveResource\RelationManagers;
 use App\Models\Leave;
+use Doctrine\DBAL\Schema\Schema;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class LeaveResource extends Resource
 {
@@ -23,26 +22,37 @@ class LeaveResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\DatePicker::make('start_date')
-                    ->required(),
-                Forms\Components\DatePicker::make('end_date')
-                    ->required(),
-                Forms\Components\Textarea::make('reason')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\Textarea::make('note')
-                    ->columnSpanFull(),
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\DatePicker::make('start_date')
+                            ->required(),
+                        Forms\Components\DatePicker::make('end_date')
+                            ->required(),
+                        Forms\Components\Textarea::make('reason')
+                            ->required()
+                            ->columnSpanFull(),
+
+                    ]),
+
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('status'),
+                        Forms\Components\Textarea::make('note')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $is_super_admin = Auth::user()->hasRole('Super Admin');
+
+                if (! $is_super_admin) {
+                    $query->where('user_id', Auth::user()->id);
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
@@ -90,9 +100,9 @@ class LeaveResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLeaves::route('/'),
+            'index'  => Pages\ListLeaves::route('/'),
             'create' => Pages\CreateLeave::route('/create'),
-            'edit' => Pages\EditLeave::route('/{record}/edit'),
+            'edit'   => Pages\EditLeave::route('/{record}/edit'),
         ];
     }
 }
