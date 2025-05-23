@@ -8,11 +8,13 @@
                         <p><strong>Nama Pegawai : </strong> {{ Auth::user()->name }} </p>
                         <p><strong>Kantor : </strong>{{ $schedule->office->name }}</p>
                         <p><strong>Shift : </strong>{{ $schedule->shift->name }} ({{ $schedule->shift->start_time }} - {{ $schedule->shift->end_time }}) WIB</p>
+                        
                         @if($schedule->is_wfa)
                             <p class="text-green-500"><strong>Status : </strong>WFA</p>
                         @else
                             <p><strong>Status : </strong>WFO</p>
                         @endif
+                    
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                         <div class="bg-gray-100 p-4 rounded-lg">
@@ -31,7 +33,15 @@
                 <div>
                     <h2 class="text-2xl font-bold mb-2">Presensi</h2>
                     <div id="map" class="mb-4 rounded-lg border border-gray-300" wire:ignore></div>
-                    <form class="row g-3" wire:submit="store" enctype="multipart/form-data">
+                    
+                    @if (session()->has('error'))
+                    <div style="color: red; padding: 10px; border: 1px solid red; background-color: #fdd;">
+                        {{ session('error') }}
+                    </div>
+                    
+                    @endif
+
+                    <form class="row g-3 mt-3" wire:submit="store" enctype="multipart/form-data">
                     <button type="button" onclick="tagLocation()" class="px-4 py-2 bg-blue-500 text-white roundeds">Tag Location</button>
                     @if($insideRadius)
                         <button type="submit" class="px-4 py-2 bg-green-500 text-white roundeds">Submit Presensi</button>
