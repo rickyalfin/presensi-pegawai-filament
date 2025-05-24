@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
@@ -35,6 +34,18 @@ class UserResource extends Resource
                                     ->email()
                                     ->required()
                                     ->maxLength(255),
+                                // Using Select Component
+                                Forms\Components\Select::make('roles')
+                                    ->relationship('roles', 'name')
+                                    ->preload()
+                                    ->searchable(),
+                                Forms\Components\FileUpload::make('image'),
+                            ]),
+                    ]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
                                 Forms\Components\DateTimePicker::make('email_verified_at'),
                                 Forms\Components\TextInput::make('password')
                                     ->password()
@@ -42,11 +53,7 @@ class UserResource extends Resource
                                     ->dehydrateStateUsing(fn($state) => Hash::make($state))
                                     ->dehydrated(fn($state) => filled($state))
                                     ->required(fn(string $context): bool => $context === 'create'),
-                                // Using Select Component
-                                Forms\Components\Select::make('roles')
-                                    ->relationship('roles', 'name')
-                                    ->preload()
-                                    ->searchable(),
+
                             ]),
                     ]),
             ]);
@@ -56,6 +63,8 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
@@ -97,9 +106,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
+            'index'  => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'edit'   => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }
