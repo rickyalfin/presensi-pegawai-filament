@@ -17,7 +17,9 @@ class OfficeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     // untik membuat urutan tabel pada menu navigasi
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 5;
+
+    protected static ?string $navigationGroup = "Office Management";
 
     public static function form(Form $form): Form
     {

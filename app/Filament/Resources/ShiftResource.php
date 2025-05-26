@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ShiftResource\Pages;
@@ -17,7 +16,9 @@ class ShiftResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     // untik membuat urutan tabel pada menu navigasi
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 6;
+
+    protected static ?string $navigationGroup = "Office Management";
 
     public static function form(Form $form): Form
     {
@@ -83,9 +84,9 @@ class ShiftResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListShifts::route('/'),
+            'index'  => Pages\ListShifts::route('/'),
             'create' => Pages\CreateShift::route('/create'),
-            'edit' => Pages\EditShift::route('/{record}/edit'),
+            'edit'   => Pages\EditShift::route('/{record}/edit'),
         ];
     }
 }

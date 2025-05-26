@@ -16,8 +16,10 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-user-group';
 
-    // untik membuat urutan tabel pada menu navigasi
-    protected static ?int $navigationSort = 3;
+    // untuk membuat urutan tabel pada menu navigasi
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationGroup = "User Management";
 
     public static function form(Form $form): Form
     {

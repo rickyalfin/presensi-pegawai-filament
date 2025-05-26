@@ -18,7 +18,9 @@ class ScheduleResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-calendar-date-range';
 
     // untik membuat urutan tabel pada menu navigasi
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationGroup = "Attendance Management";
 
     public static function form(Form $form): Form
     {
