@@ -13,6 +13,10 @@ class ListAttendances extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('Download Data')
+                ->url(route('attendance-export'))
+                ->color('danger'),
+            Actions\CreateAction::make(),
             Action::make('Tambah presensi')
                 ->url(route('presensi'))
                 ->color('warning'),

@@ -31,7 +31,7 @@ class Attendance extends Model
 
     public function isLate()
     {
-        $scheduleStartTime = Carbon::parse($this->schedule_satart_time);
+        $scheduleStartTime = Carbon::parse($this->schedule_start_time);
         $starTime          = Carbon::parse($this->start_time);
 
         return $starTime->greaterThan($scheduleStartTime);
