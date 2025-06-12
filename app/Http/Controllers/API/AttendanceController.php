@@ -50,11 +50,20 @@ class AttendanceController extends Controller
         $schedule = Schedule::with(['office', 'shift'])
             ->where('user_id', auth()->user()->id)
             ->first();
-        return response()->json([
-            'success' => true,
-            'data'    => $schedule,
-            'message' => 'Success get schedule',
-        ]);
+
+        if ($schedule->is_banned) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are banned',
+                'data'    => null,
+            ]);
+        } else {
+            return response()->json([
+                'success' => true,
+                'data'    => $schedule,
+                'message' => 'Success get schedule',
+            ]);
+        }
     }
 
     public function store(Request $request)
@@ -147,6 +156,22 @@ class AttendanceController extends Controller
             'success' => true,
             'data'    => $attendanceList,
             'message' => 'Success get attendace bu month and year',
+        ]);
+    }
+
+    public function banned()
+    {
+        $schedule = Schedule::where('user_id', Auth::user()->id)->first();
+        if ($schedule) {
+            $schedule->update([
+                'is_banned' => true,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Success banned schedule',
+            'data'    => $schedule,
         ]);
     }
 }

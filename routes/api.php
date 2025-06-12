@@ -12,6 +12,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/get-schedule', [AttendanceController::class, 'getSchedule']);
     Route::post('/store-attendance', [AttendanceController::class, 'store']);
     Route::get('/get-attendance-by-month-year/{month}/{year}', [AttendanceController::class, 'getAttendanceByMonthYear']);
+    Route::post('/banned', [AttendanceController::class, 'banned']);
 });
 
 Route::get('/user', function (Request $request) {
