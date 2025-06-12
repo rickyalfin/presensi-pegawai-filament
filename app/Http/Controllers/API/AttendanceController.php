@@ -113,4 +113,40 @@ class AttendanceController extends Controller
 
         }
     }
+
+    public function getAttendanceByMonthYear($month, $year)
+    {
+        $validator = Validator::make(['month' => $month, 'year' => $year], [
+            'month' => 'required|integer|between:1,12',
+            'year'  => 'required|integer|min:2025|max:' . date('Y'),
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'data'    => $validator->errors(),
+                'message' => 'Validation error',
+            ], 422);
+        }
+
+        $userId         = auth()->user()->id;
+        $attendanceList = Attendance::select('start_time', 'end_time', 'created_at')
+            ->where('user_id', $userId)
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->get()
+            ->map(function ($attendance) {
+                return [
+                    'start_time' => $attendance->start_time,
+                    'end_time'   => $attendance->end_time,
+                    'date'       => $attendance->created_at->toDateString(),
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'data'    => $attendanceList,
+            'message' => 'Success get attendace bu month and year',
+        ]);
+    }
 }
