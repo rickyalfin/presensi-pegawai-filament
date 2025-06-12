@@ -3,6 +3,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
+use App\Models\Leave;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -51,6 +52,21 @@ class AttendanceController extends Controller
             ->where('user_id', auth()->user()->id)
             ->first();
 
+        $today         = Carbon::today()->format('Y-m-d');
+        $approvedLeave = Leave::where('user_id', Auth::user()->id)
+            ->where('status', 'approved')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->exists();
+
+        if ($approvedLeave) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Anda tidak dapat melakukan presensi karena sedang cuti',
+                'data'    => null,
+            ]);
+        }
+
         if ($schedule->is_banned) {
             return response()->json([
                 'success' => false,
@@ -82,6 +98,21 @@ class AttendanceController extends Controller
         }
 
         $schedule = Schedule::where('user_id', Auth::user()->id)->first();
+
+        $today         = Carbon::today()->format('Y-m-d');
+        $approvedLeave = Leave::where('user_id', Auth::user()->id)
+            ->where('status', 'approved')
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->exists();
+
+        if ($approvedLeave) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Anda tidak dapat melakukan presensi karena sedang cuti',
+                'data'    => null,
+            ]);
+        }
 
         if ($schedule) {
             $attendance = Attendance::where('user_id', Auth::user()->id)
