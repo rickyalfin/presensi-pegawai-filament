@@ -205,4 +205,14 @@ class AttendanceController extends Controller
             'data'    => $schedule,
         ]);
     }
+
+    public function getImage()
+    {
+        $user = auth()->user();
+        return response()->json([
+            'success' => true,
+            'message' => 'Success get image',
+            'data'    => $user->image_url,
+        ]);
+    }
 }

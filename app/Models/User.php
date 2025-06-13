@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Leave::class);
     }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? url('storage/' . $this->image) : null;
+    }
 }
