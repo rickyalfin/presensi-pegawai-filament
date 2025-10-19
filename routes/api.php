@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/get-attendance-today', [AttendanceController::class, 'getAttendanceToday'])->name('get_attendance_today');
     Route::get('/get-schedule', [AttendanceController::class, 'getSchedule'])->name('get_schedule');
@@ -16,9 +17,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/banned', [AttendanceController::class, 'banned'])->name('banned');
     Route::get('/get-image', [AttendanceController::class, 'getImage'])->name('get_image');
 
+
     Route::get('leaves', [LeaveController::class, 'index'])->name('get_leave');
     Route::post('leave-request', [LeaveController::class, 'store'])->name('create_leave');
 });
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();

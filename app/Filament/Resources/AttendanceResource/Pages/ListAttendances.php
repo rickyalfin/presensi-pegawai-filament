@@ -20,7 +20,7 @@ class ListAttendances extends ListRecords
             Action::make('Tambah presensi')
                 ->url(route('presensi'))
                 ->color('warning'),
-            Actions\CreateAction::make(),
+
         ];
     }
 }
